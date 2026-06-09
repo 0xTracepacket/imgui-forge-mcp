@@ -1,0 +1,33 @@
+{
+  "windows": [
+    {
+      "id": "demo",
+      "type": "window",
+      "props": { "title": "Demo", "pos": [60, 60], "size": [420, 480] },
+      "children": [
+        { "type": "text", "props": { "text": "Settings", "color": [0.4, 0.8, 1.0, 1.0] } },
+        { "type": "separator" },
+        { "id": "name", "type": "input_text", "props": { "label": "Name", "value": "", "hint": "type here" } },
+        { "id": "volume", "type": "slider_float", "props": { "label": "Volume", "value": 0.5, "min": 0.0, "max": 1.0 } },
+        { "id": "count", "type": "slider_int", "props": { "label": "Count", "value": 3, "min": 0, "max": 10 } },
+        { "id": "enabled", "type": "checkbox", "props": { "label": "Enabled", "value": true } },
+        { "id": "mode", "type": "combo", "props": { "label": "Mode", "items": ["Low", "Medium", "High"], "value": 1 } },
+        { "id": "tint", "type": "color_edit4", "props": { "label": "Tint", "value": [0.2, 0.6, 0.9, 1.0] } },
+        { "type": "separator" },
+        { "id": "tabs", "type": "tab_bar", "children": [
+          { "type": "tab_item", "props": { "label": "General" }, "children": [
+            { "type": "checkbox", "props": { "label": "Auto-save", "value": true } },
+            { "type": "slider_float", "props": { "label": "Opacity", "value": 0.8, "min": 0.0, "max": 1.0 } }
+          ] },
+          { "type": "tab_item", "props": { "label": "Advanced" }, "children": [
+            { "type": "input_int", "props": { "label": "Threads", "value": 4 } }
+          ] }
+        ] },
+        { "type": "separator" },
+        { "id": "apply", "type": "button", "props": { "label": "Apply", "size": [120, 0] } },
+        { "type": "same_line" },
+        { "id": "reset", "type": "button", "props": { "label": "Reset", "size": [120, 0] } }
+      ]
+    }
+  ]
+}

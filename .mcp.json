@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "imgui-tool": {
+      "command": "node",
+      "args": ["mcp/server.mjs"],
+      "env": {
+        "IMGUI_SPEC_PATH": "spec/ui_spec.json"
+      }
+    }
+  }
+}

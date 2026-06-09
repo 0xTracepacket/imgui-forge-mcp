@@ -1,0 +1,12 @@
+{
+  "name": "imgui-tool — sync",
+  "id": "imgui-tool-sync",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "networkAccess": {
+    "allowedDomains": ["*"],
+    "reasoning": "Connects to the local imgui-tool bridge (ws://127.0.0.1:8377) to sync the menu design with the live ImGui preview."
+  }
+}

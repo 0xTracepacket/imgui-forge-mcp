@@ -1,0 +1,11 @@
+build/
+mcp/node_modules/
+figma/node_modules/
+*.obj
+*.exe
+*.tmp
+imgui.ini
+spec/*.tmp
+spec/.shot
+spec/preview.png
+figma/export.json

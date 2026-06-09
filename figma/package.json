@@ -1,0 +1,9 @@
+{
+  "name": "imgui-tool-figma-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "bin": { "imgui-figma-bridge": "bridge.mjs" },
+  "scripts": { "bridge": "node bridge.mjs", "test": "node test_roundtrip.mjs" },
+  "dependencies": { "ws": "^8.18.0" }
+}

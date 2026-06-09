@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  body { font: 12px -apple-system, "Segoe UI", sans-serif; margin: 0; padding: 12px; color: #e8edf2; background: #1c1f24; }
+  h1 { font-size: 13px; margin: 0 0 8px; color: #ccdbeb; }
+  .row { display: flex; gap: 8px; margin: 8px 0; align-items: center; }
+  button { flex: 1; padding: 8px; border: 1px solid #30333a; border-radius: 6px; background: #282a2f; color: #e8edf2; cursor: pointer; }
+  button:hover { background: #383d45; }
+  #dot { width: 9px; height: 9px; border-radius: 50%; background: #c0392b; display: inline-block; margin-right: 6px; }
+  #dot.on { background: #2ecc71; }
+  label { display: flex; align-items: center; gap: 6px; }
+  #log { margin-top: 8px; font-size: 11px; color: #9199a3; max-height: 90px; overflow: auto; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+  <h1><span id="dot"></span>imgui-tool · sync</h1>
+  <div class="row">
+    <button id="pull">⬇ Pull from ImGui</button>
+    <button id="push">⬆ Push to ImGui</button>
+  </div>
+  <div class="row"><label><input type="checkbox" id="auto" /> Auto-push edits to ImGui</label></div>
+  <div id="log"></div>
+
+<script>
+  const PORT = 8377;
+  const logEl = document.getElementById("log");
+  const dot = document.getElementById("dot");
+  const log = (m) => { logEl.textContent = (new Date().toLocaleTimeString() + "  " + m + "\n" + logEl.textContent).slice(0, 1500); };
+  let ws, retry = 0;
+
+  function connect() {
+    ws = new WebSocket("ws://127.0.0.1:" + PORT);
+    ws.onopen = () => { dot.classList.add("on"); retry = 0; log("connected to bridge"); };
+    ws.onclose = () => { dot.classList.remove("on"); retry++; log("disconnected, retrying…"); setTimeout(connect, Math.min(5000, 500 * retry)); };
+    ws.onerror = () => log("ws error (is the bridge running?)");
+    ws.onmessage = (e) => {
+      let m; try { m = JSON.parse(e.data); } catch (err) { return; }
+      if (m.kind === "figmodel") { parent.postMessage({ pluginMessage: { type: "paint", model: m.model } }, "*"); log("received menu from ImGui"); }
+      else if (m.kind === "ack") { log("ImGui updated (" + m.windows + " window(s))"); }
+    };
+  }
+  connect();
+
+  document.getElementById("pull").onclick = () => { if (ws && ws.readyState === 1) ws.send(JSON.stringify({ kind: "pull" })); };
+  document.getElementById("push").onclick = () => parent.postMessage({ pluginMessage: { type: "push" } }, "*");
+  document.getElementById("auto").onchange = (e) => parent.postMessage({ pluginMessage: { type: "setAuto", value: e.target.checked } }, "*");
+
+  // messages from the plugin main thread
+  onmessage = (event) => {
+    const msg = event.data.pluginMessage;
+    if (!msg) return;
+    if (msg.type === "send" && ws && ws.readyState === 1) { ws.send(JSON.stringify(msg.payload)); log("pushed design to ImGui"); }
+  };
+</script>
+</body>
+</html>
