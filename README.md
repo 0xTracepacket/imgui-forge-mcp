@@ -6,7 +6,8 @@
 A JSON file (`spec/ui_spec.json`) describes the UI; a native C++ host renders it and
 **hot-reloads on every change**, so editing the spec updates the window live. An MCP
 server exposes tools to edit the spec programmatically, and a Figma bridge syncs the
-design both ways.
+design both ways. Which makes changing, porting and adapting your imgui extremely easy
+especially with ai tools that with the MCP service get far greater imgui capabilities.
 
 `imgui-tool` is the name of the bundled MCP server (`mcp/server.mjs`).
 
